@@ -17,7 +17,7 @@
 ## Scope
 ### In
 - Angular frontend + Node/Express backend, run locally from this folder (npm), not in Docker.
-- LiteLLM proxy as the only LLM gateway, run in Docker (the only Docker component), stateless with no DB; app → LiteLLM → Claude. App uses LiteLLM only for routing and the per-request cost; quotas, ledger and reporting are in the app.
+- LiteLLM proxy as the only LLM gateway, run in Docker (the only Docker component), with its own Postgres database (separate from the app's DB, on the same user-provided server); app → LiteLLM → Claude. App uses LiteLLM only for routing and the per-request cost; quotas, ledger and reporting are in the app.
 - PostgreSQL provided by the user; connection details in `.env`.
 - Email/password login; roles `USER` and `ADMIN`.
 - System-wide monthly quota (hard stop) and per-user weekly quota (default + per-user override).
@@ -31,7 +31,7 @@
 - Langfuse or any other observability/tracing tool.
 - SSO / Azure AD.
 - Email/Slack alerts or notifications; no in-app warning banner when nearing a quota.
-- LiteLLM database, virtual keys, budgets or spend logs — LiteLLM runs stateless from its config file and is used only for routing and per-request cost.
+- Using LiteLLM's virtual keys, budgets or spend logs for app features — LiteLLM has its own DB (operator convenience only); the app uses LiteLLM only for routing and per-request cost and never reads LiteLLM's DB.
 - Request-rate limits (requests/min, tokens/min).
 - File/image uploads in chat.
 - Managing the model list from the UI (edited in LiteLLM config).
@@ -94,7 +94,7 @@
 
 ## Non-functional requirements
 - Only LiteLLM runs in Docker (`docker compose up` for LiteLLM); backend and frontend run with npm from this folder.
-- All secrets/config via `.env` (Postgres connection, `ANTHROPIC_API_KEY`, LiteLLM URL/key, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, JWT secret); `.env.example` committed, `.env` not.
+- All secrets/config via `.env` (Postgres connections for the app and LiteLLM, LiteLLM URL/master/salt keys, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, JWT secret); `.env.example` committed, `.env` not. The Anthropic provider key is not in `.env`; it is stored as a credential in LiteLLM (entered via its admin UI).
 - All period boundaries and displayed times use Asia/Kolkata (IST); timestamps stored in UTC.
 - Quota check adds ≤ 100 ms (p95) before the LLM call with 20 users and 30 days of ledger data.
 - First streamed token shown within 1 s of LiteLLM sending it.

@@ -1,6 +1,6 @@
 ---
 name: engineer
-description: Implements tasks from docs/tech-spec.md and fixes findings from docs/reviews/ and docs/qa/. Use for all application code changes.
+description: Implements tasks from docs/tech-spec.md (frontend work follows docs/ux/ui-design.md) and fixes findings from docs/reviews/, docs/qa/ and docs/ux/. Use for all application code changes.
 tools: Read, Edit, Write, Bash, Grep, Glob
 model: sonnet
 color: blue

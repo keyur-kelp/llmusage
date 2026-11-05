@@ -1,0 +1,47 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.migrations.json --noEmit",
+    "migrate:build": "tsc -p tsconfig.migrations.json",
+    "migrate": "npm run migrate:build && sequelize-cli db:migrate",
+    "rollup": "tsx src/cli/rollup.ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "decimal.js": "^10.4.3",
+    "dotenv": "^16.4.5",
+    "express": "^5.0.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "luxon": "^3.5.0",
+    "node-cron": "^3.0.3",
+    "openai": "^4.77.0",
+    "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
+    "pino": "^9.5.0",
+    "pino-http": "^10.3.0",
+    "sequelize": "^6.37.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/luxon": "^3.4.2",
+    "@types/node-cron": "^3.0.11",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "sequelize-cli": "^6.6.2",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "tsx": "^4.19.2"
+  }
+}

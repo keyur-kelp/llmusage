@@ -1,0 +1,2 @@
+- [Design decisions](project_design_decisions.md) — LiteLLM own DB, streaming-cost gate (no /spend/calculate), rollup union, quota order, PG 18, models, provisional Q3-Q6
+- [Review conventions](review_conventions.md) — accepted deviations + issue keys from review-1 (90), review-2 (97), review-3 (98), review-4 (94), review-5 (97), review-6 (100), review-7 (96), review-8 (99), review-9 (98); T-2 gate passed, compose setup, markdown deps

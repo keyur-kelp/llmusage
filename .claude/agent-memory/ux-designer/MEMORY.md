@@ -1,0 +1,3 @@
+- [Audit findings](project_audit_findings.md) — audit-4 93 APPROVE; 5 open minors (usage-stale, dialog-validation, residues); D-2 pending
+- [Credentials](feedback_credentials.md) — .local/ux-credentials.json test logins; screenshots to docs/ux/screens/
+- [Visual direction v3](project_visual_direction.md) — light default + theme switch, indigo/violet brand, navy dark, Jakarta+Inter; 17 [ui3-*] musts

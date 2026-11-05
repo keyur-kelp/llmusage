@@ -1,0 +1,23 @@
+# The only Docker component. LiteLLM has its OWN Postgres database (`litellm`, on the host
+# server, never in Docker, never the app's `llmusage` DB). The provider key is NOT in any file:
+# the user stores it in the LiteLLM UI as credential `anthropic` (see README).
+# Start from the repo root:  docker compose --env-file .env -f litellm/docker-compose.yml up -d
+services:
+  litellm:
+    # Pinned stable tag (do not use "latest").
+    image: ghcr.io/berriai/litellm:main-v1.83.14-stable
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    ports:
+      - "4000:4000"
+    # No env_file: the app's DATABASE_URL must never reach the container (LiteLLM would treat it
+    # as its own DB). Only the variables below are passed, interpolated from the root .env via --env-file.
+    environment:
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:?set LITELLM_MASTER_KEY in .env}
+      LITELLM_SALT_KEY: ${LITELLM_SALT_KEY:?set LITELLM_SALT_KEY in .env (set once, never change)}
+      DATABASE_URL: ${LITELLM_DATABASE_URL:?set LITELLM_DATABASE_URL in .env}
+      STORE_MODEL_IN_DB: "True"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+    restart: unless-stopped

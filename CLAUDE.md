@@ -5,9 +5,9 @@
 ## Stack (tech-lead enforces this)
 - Runtime: Node 22, npm 10, TypeScript strict everywhere
 - Backend: Express 5 + TypeScript, Sequelize v6 ORM (`sequelize` + `pg`) for DB access, `sequelize-cli` for migrations and seeders
-- Frontend: Angular 20 (standalone components, signals), Angular Material for UI
-- LLM: LiteLLM proxy (Docker, stateless, config file only) → Anthropic Claude. The app calls LiteLLM's OpenAI-compatible API via the `openai` npm client pointed at `LITELLM_BASE_URL`
-- DB: PostgreSQL (user-provided, connection from `.env`; not run in Docker)
+- Frontend: Angular 20 (standalone components, signals), Angular Material for UI; `marked` + `DOMPurify` for rendering assistant Markdown (always sanitise before binding HTML). Visual design source of truth: docs/ux/ui-design.md
+- LLM: LiteLLM proxy (Docker) → Anthropic Claude. LiteLLM has its own Postgres database (`LITELLM_DATABASE_URL`, a separate DB on the same user-provided server, never the app's DB) for its keys/models/spend logs; the app never reads it. Models are still defined in `litellm/config.yaml`. The app calls LiteLLM's OpenAI-compatible API via the `openai` npm client pointed at `LITELLM_BASE_URL`
+- DB: PostgreSQL (user-provided, connection from `.env`; not run in Docker). App DB = `DATABASE_URL`; LiteLLM DB = `LITELLM_DATABASE_URL` (same server, separate database)
 - Auth: email/password, bcrypt hashes, JWT bearer tokens
 - Tests: Jest + supertest (backend unit/integration), Angular default test runner (frontend unit), Playwright (acceptance, `tests/acceptance/`)
 - Not allowed: no other ORMs/query builders (Prisma/TypeORM/Knex), no `sequelize.sync()` for schema changes (migrations only), no direct Anthropic SDK calls (always via LiteLLM), no `any`, no float math for money (use `numeric` in DB, decimal strings/`decimal.js` in code), no Docker for app or Postgres, no Langfuse
@@ -26,7 +26,7 @@
 
 ## Commands (run from repo root)
 - Install: `npm install`
-- LiteLLM: `docker compose -f litellm/docker-compose.yml up -d`
+- LiteLLM: `docker compose --env-file .env -f litellm/docker-compose.yml up -d`
 - Migrate DB: `npm run migrate`
 - Run backend: `npm run dev:backend`
 - Run frontend: `npm run dev:frontend`
@@ -47,4 +47,4 @@
 
 ## Delivery pipeline
 - /prd → interview + docs/prd.md
-- /ship → tech-lead design → engineer → tech-lead review (≤3) → qa (≤3) → pm-acceptance
+- /ship → tech-lead design + ux-designer design review → engineer → tech-lead review (score ≥ 90) → qa (100% ACs, coverage ≥ 80%) → ux-designer audit (UX score ≥ 85) → pm-acceptance; loops end on threshold or stall guard

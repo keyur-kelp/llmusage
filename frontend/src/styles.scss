@@ -1,0 +1,303 @@
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light;                         // v3: light by default, whatever the OS says
+  @include mat.theme((
+    color: (
+      primary: mat.$violet-palette,            // base hues for generated state layers; exact roles overridden below
+      tertiary: mat.$cyan-palette,
+      theme-type: color-scheme,                // emits light-dark() so the class switch below works
+    ),
+    typography: (
+      plain-family: ('Inter', system-ui, -apple-system, 'Segoe UI', sans-serif),
+      brand-family: ('Plus Jakarta Sans', 'Inter', system-ui, sans-serif),
+      bold-weight: 700,
+      medium-weight: 500,
+      regular-weight: 400,
+    ),
+    density: 0,
+  ));
+
+  // Exact v3 roles (§2.2). Keys are M3 system role names.
+  @include mat.theme-overrides((
+    background:                light-dark(#f5f6fb, #0f1729),
+    on-background:             light-dark(#0f172a, #e6eaf5),
+    surface:                   light-dark(#f5f6fb, #0f1729),
+    surface-dim:               light-dark(#e6e9f3, #0b1222),
+    surface-bright:            light-dark(#ffffff, #24304d),
+    surface-container-lowest:  light-dark(#ffffff, #0b1222),
+    surface-container-low:     light-dark(#eef0f8, #151f35),
+    surface-container:         light-dark(#e9ecf6, #1b2640),
+    surface-container-high:    light-dark(#ffffff, #24304d),
+    surface-container-highest: light-dark(#e2e6f2, #2c3a5a),
+    surface-variant:           light-dark(#e2e8f0, #2c3a5a),
+    on-surface:                light-dark(#0f172a, #e6eaf5),
+    on-surface-variant:        light-dark(#475569, #a9b4cc),
+    outline:                   light-dark(#737b8f, #7d8bab),
+    outline-variant:           light-dark(#d5dae6, #33416a),
+    primary:                   light-dark(#4f46e5, #a5b4fc),
+    on-primary:                light-dark(#ffffff, #1e1b4b),
+    primary-container:         light-dark(#e0e7ff, #3730a3),
+    on-primary-container:      light-dark(#1e1b4b, #e0e7ff),
+    secondary:                 light-dark(#4c5285, #c3c7ee),
+    on-secondary:              light-dark(#ffffff, #23284f),
+    secondary-container:       light-dark(#e0e7ff, #2b3566),
+    on-secondary-container:    light-dark(#312e81, #e0e7ff),
+    tertiary:                  light-dark(#0f766e, #5eead4),
+    on-tertiary:               light-dark(#ffffff, #042f2e),
+    tertiary-container:        light-dark(#ccfbf1, #134e4a),
+    on-tertiary-container:     light-dark(#115e59, #ccfbf1),
+    error:                     light-dark(#b91c1c, #fca5a5),
+    on-error:                  light-dark(#ffffff, #450a0a),
+    error-container:           light-dark(#fee2e2, #4c1d24),
+    on-error-container:        light-dark(#7f1d1d, #fecaca),
+    inverse-surface:           light-dark(#1e293b, #e6eaf5),
+    inverse-on-surface:        light-dark(#f1f5f9, #0f172a),
+    inverse-primary:           light-dark(#a5b4fc, #4f46e5),
+  ));
+
+  @include mat.strong-focus-indicators((border-color: var(--app-focus), border-width: 2px, border-radius: 10px));
+}
+html.theme-light  { color-scheme: light; }
+html.theme-dark   { color-scheme: dark; }
+html.theme-system { color-scheme: light dark; }
+
+:root {
+  // spacing (unchanged)
+  --app-space-1: 4px;  --app-space-2: 8px;  --app-space-3: 12px; --app-space-4: 16px;
+  --app-space-5: 24px; --app-space-6: 32px; --app-space-7: 48px;
+  // radius (v3)
+  --app-radius-xs: 6px; --app-radius-s: 10px; --app-radius-m: 14px; --app-radius-l: 18px;
+  --app-radius-xl: 24px; --app-radius-pill: 999px;
+  // icons
+  --app-icon-s: 16px; --app-icon-m: 20px; --app-icon-l: 24px; --app-icon-xl: 32px;
+  // layout (unchanged; topbar is 60 in v3)
+  --app-topbar-h: 60px; --app-sidebar-w: 280px; --app-quota-w: 300px; --app-content-max: 880px;
+  // motion
+  --app-motion-fast: 150ms; --app-motion-base: 200ms; --app-motion-slow: 250ms;
+  --app-ease: cubic-bezier(.2, 0, 0, 1); --app-ease-out: cubic-bezier(.05, .7, .1, 1);
+
+  // fonts
+  --app-font-brand: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --app-font-plain: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --app-font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --app-type-display:   700 32px/40px var(--app-font-brand);
+  --app-type-h1:        700 24px/32px var(--app-font-brand);
+  --app-type-brand:     700 17px/24px var(--app-font-brand);
+  --app-type-title:     600 15px/22px var(--app-font-brand);
+  --app-type-section:   600 16px/24px var(--app-font-brand);
+  --app-type-number-xl: 600 28px/36px var(--app-font-plain);
+  --app-type-number-l:  600 22px/28px var(--app-font-plain);
+  --app-type-overline:  600 11px/16px var(--app-font-plain);
+  --app-num: 'tnum' 1, 'lnum' 1;
+
+  // surfaces and borders
+  --app-surface-raised: light-dark(#ffffff, #1b2640);
+  --app-surface-sunken: light-dark(#f1f3f9, #111a2e);   // code blocks
+  --app-border:         light-dark(#e3e7f0, #2a3758);
+  --app-track:          light-dark(#e2e8f0, #2c3a5a);
+  --app-row-hover:      light-dark(#f5f7ff, #222e4d);
+  --app-thead-bg:       light-dark(#f8f9fc, #1f2a47);
+  --app-tile-bg:        light-dark(#eef2ff, #26305a);   // icon tiles, model chip
+  --app-tile-fg:        light-dark(#4338ca, #c7d2fe);
+  --app-model-chip-fg:  light-dark(#3730a3, #c7d2fe);
+  --app-focus:          light-dark(#4f46e5, #a5b4fc);
+
+  // brand gradient + page tint
+  --app-grad-1: light-dark(#312e81, #1e1b4b);
+  --app-grad-2: light-dark(#4338ca, #262a6b);
+  --app-grad-3: light-dark(#6d28d9, #2e1f5e);
+  --app-gradient-brand: linear-gradient(100deg, var(--app-grad-1) 0%, var(--app-grad-2) 55%, var(--app-grad-3) 100%);
+  --app-bubble-1: light-dark(#4f46e5, #4338ca);
+  --app-bubble-2: light-dark(#6d28d9, #5b21b6);
+  --app-gradient-bubble: linear-gradient(135deg, var(--app-bubble-1), var(--app-bubble-2));
+  --app-on-brand: #ffffff;
+  --app-on-brand-muted: light-dark(#e0e7ff, #c7d2fe);
+  --app-page-tint: radial-gradient(1200px 600px at 100% -10%, light-dark(rgb(99 102 241 / .08), rgb(129 140 248 / .10)), transparent 60%);
+  --app-hero-tint: linear-gradient(135deg, light-dark(#eef2ff, #222c55) 0%, var(--app-surface-raised) 65%);
+
+  // status roles (v3: warn is its own amber, not tertiary)
+  --app-ok: var(--mat-sys-primary);
+  --app-good-container: var(--mat-sys-tertiary-container);
+  --app-on-good-container: var(--mat-sys-on-tertiary-container);
+  --app-warn: light-dark(#b45309, #fbbf24);
+  --app-warn-container: light-dark(#fef3c7, #422006);
+  --app-on-warn-container: light-dark(#78350f, #fde68a);
+  --app-danger: var(--mat-sys-error);
+  --app-danger-container: var(--mat-sys-error-container);
+  --app-on-danger-container: var(--mat-sys-on-error-container);
+  --app-danger-title: light-dark(#991b1b, #fecaca);
+  --app-danger-border: light-dark(#fecaca, #7f1d1d);
+  --app-warn-border: light-dark(#fde68a, #78350f);
+
+  // shadows
+  --app-shadow-1: light-dark(rgb(15 23 42 / .05), rgb(0 0 0 / .35)) 0 1px 2px, light-dark(rgb(30 27 75 / .07), rgb(0 0 0 / .25)) 0 1px 3px, inset 0 1px 0 light-dark(transparent, rgb(255 255 255 / .04));
+  --app-shadow-2: light-dark(rgb(30 27 75 / .10), rgb(0 0 0 / .5)) 0 4px 12px -2px, light-dark(rgb(15 23 42 / .05), transparent) 0 2px 4px, inset 0 1px 0 light-dark(transparent, rgb(255 255 255 / .05));
+  --app-shadow-3: light-dark(rgb(30 27 75 / .28), rgb(0 0 0 / .65)) 0 16px 40px -12px, light-dark(rgb(15 23 42 / .06), transparent) 0 4px 10px, inset 0 1px 0 light-dark(transparent, rgb(255 255 255 / .06));
+
+  // Material component tokens (names verified against @angular/material 20)
+  --mat-button-filled-container-shape: var(--app-radius-m);
+  --mat-button-outlined-container-shape: var(--app-radius-m);
+  --mat-button-text-container-shape: var(--app-radius-m);
+  --mat-button-tonal-container-shape: var(--app-radius-m);
+  --mat-button-protected-container-shape: var(--app-radius-m);
+  --mat-button-filled-container-height: 44px;
+  --mat-card-outlined-container-shape: var(--app-radius-l);
+  --mat-card-outlined-container-color: var(--app-surface-raised);
+  --mat-card-outlined-outline-color: var(--app-border);
+  --mat-card-elevated-container-color: var(--app-surface-raised);
+  --mat-dialog-container-shape: var(--app-radius-xl);
+  --mat-dialog-container-color: var(--mat-sys-surface-container-high);
+  --mat-menu-container-shape: var(--app-radius-m);
+  --mat-menu-container-color: var(--mat-sys-surface-container-high);
+  --mat-select-panel-background-color: var(--mat-sys-surface-container-high);
+  --mat-datepicker-calendar-container-background-color: var(--mat-sys-surface-container-high);
+  --mat-datepicker-calendar-container-shape: var(--app-radius-l);
+  --mat-form-field-outlined-container-shape: var(--app-radius-s);
+  --mat-form-field-outlined-outline-color: var(--mat-sys-outline);
+  --mat-form-field-outlined-hover-outline-color: var(--mat-sys-on-surface);
+  --mat-form-field-outlined-focus-outline-width: 2px;
+  --mat-tab-active-indicator-height: 3px;
+  --mat-tab-active-indicator-shape: 3px 3px 0 0;
+  --mat-tab-label-text-weight: 600;
+  --mat-list-active-indicator-shape: var(--app-radius-m);
+  --mat-table-background-color: transparent;
+  --mat-table-header-headline-color: var(--mat-sys-on-surface-variant);
+  --mat-table-header-headline-weight: 600;
+  --mat-table-row-item-outline-color: var(--mat-sys-outline-variant);
+  --mat-paginator-container-background-color: transparent;
+  --mat-sidenav-container-shape: 0;
+  --mat-sidenav-container-background-color: var(--mat-sys-surface-container-low);
+  --mat-sidenav-content-background-color: transparent;
+  --mat-tooltip-container-shape: var(--app-radius-s);
+  --mat-snack-bar-container-shape: var(--app-radius-m);
+  --mat-progress-bar-track-shape: var(--app-radius-pill);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --app-motion-fast: 0ms; --app-motion-base: 0ms; --app-motion-slow: 0ms; }
+}
+
+html, body { height: 100%; margin: 0; }
+body {
+  font: var(--mat-sys-body-large);
+  color: var(--mat-sys-on-surface);
+  background: var(--app-page-tint), var(--mat-sys-surface);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--app-motion-base) var(--app-ease), color var(--app-motion-base) var(--app-ease);
+}
+.app-num { font-feature-settings: var(--app-num); font-variant-numeric: tabular-nums lining-nums; }
+.mat-icon { flex: none; }
+.app-icon-s { width: var(--app-icon-s) !important; height: var(--app-icon-s) !important; font-size: var(--app-icon-s) !important; }
+.app-icon-m { width: var(--app-icon-m) !important; height: var(--app-icon-m) !important; font-size: var(--app-icon-m) !important; }
+.app-icon-l { width: var(--app-icon-l) !important; height: var(--app-icon-l) !important; font-size: var(--app-icon-l) !important; }
+
+// Surfaces and shared primitives
+.app-card {
+  background: var(--app-surface-raised); border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-l); box-shadow: var(--app-shadow-1);
+}
+.app-icon-tile {
+  display: inline-grid; place-items: center; flex: none; width: 32px; height: 32px;
+  border-radius: var(--app-radius-s); background: var(--app-tile-bg); color: var(--app-tile-fg);
+}
+.app-icon-tile .mat-icon { width: var(--app-icon-m); height: var(--app-icon-m); font-size: var(--app-icon-m); }
+
+// Chips (v3: filled tints, never colour-only)
+.app-chip {
+  display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 10px;
+  border-radius: var(--app-radius-pill); font: var(--mat-sys-label-medium); font-weight: 600; white-space: nowrap;
+  background: var(--app-tile-bg); color: var(--app-tile-fg); border: 0;
+}
+.app-chip .mat-icon { width: var(--app-icon-s); height: var(--app-icon-s); font-size: var(--app-icon-s); }
+.app-chip.good   { background: var(--app-good-container);   color: var(--app-on-good-container); }
+.app-chip.warn   { background: var(--app-warn-container);   color: var(--app-on-warn-container); }
+.app-chip.danger { background: var(--app-danger-container); color: var(--app-on-danger-container); }
+.app-chip.neutral { background: var(--mat-sys-surface-container-low); color: var(--mat-sys-on-surface-variant); }
+
+// Meter (§4.1). Apply to <mat-progress-bar class="app-meter ...">
+.app-meter {
+  --mat-progress-bar-track-height: 10px; --mat-progress-bar-active-indicator-height: 10px;
+  --mat-progress-bar-track-color: var(--app-track);
+  --mat-progress-bar-active-indicator-color: var(--app-ok);
+  border-radius: var(--app-radius-pill); overflow: hidden;
+}
+.app-meter.low     { --mat-progress-bar-active-indicator-color: var(--app-warn); }
+.app-meter.used-up { --mat-progress-bar-track-color: var(--app-danger); }
+
+// Enter animation for bubbles and banner
+@keyframes app-rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .app-rise { animation: app-rise var(--app-motion-base) var(--app-ease-out) both; }
+}
+
+// Topbar height on mobile
+@media (max-width: 599.98px) { :root { --app-topbar-h: 56px; } }
+
+// Reduced motion: no animation or transition anywhere (ui-design 2.6)
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0ms !important; animation-delay: 0ms !important; transition-duration: 0ms !important; }
+}
+
+// Theme cross-fade: the class is present for about 200ms after a switch (ui-design 8.2)
+html.theme-switching *, html.theme-switching *::before {
+  transition: background-color var(--app-motion-base) var(--app-ease), color var(--app-motion-base) var(--app-ease), border-color var(--app-motion-base) var(--app-ease) !important;
+}
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.app-muted { color: var(--mat-sys-on-surface-variant); }
+.app-h1 { font: var(--app-type-h1); margin: 0; }
+
+// Tables (ui-design 4.8)
+.app-table-card { background: var(--app-surface-raised); border: 1px solid var(--app-border); border-radius: var(--app-radius-l); box-shadow: var(--app-shadow-1); overflow: hidden; margin-bottom: 24px; }
+.app-table-scroll { overflow-x: auto; max-width: 100%; }
+table.mat-mdc-table { background: transparent; }
+.app-table-card table.mat-mdc-table { width: 100%; }
+.app-table-card tr.mat-mdc-header-row { height: 44px; background: var(--app-thead-bg); }
+.app-table-card th.mat-mdc-header-cell { background: var(--app-thead-bg); font: var(--mat-sys-label-medium); font-weight: 600; color: var(--mat-sys-on-surface-variant); border-bottom: 1px solid var(--mat-sys-outline-variant); }
+.app-table-card tr.mat-mdc-row { height: 52px; transition: background-color var(--app-motion-fast) var(--app-ease); }
+.app-table-card tr.mat-mdc-row:hover { background: var(--app-row-hover); }
+.app-table-card tr.mat-mdc-row:last-child td.mat-mdc-cell { border-bottom: 0; }
+.app-table-card td.mat-mdc-cell:first-child, .app-table-card th.mat-mdc-header-cell:first-child, .app-table-card td.mat-mdc-footer-cell:first-child { padding-inline-start: 20px; }
+.app-table-card td.mat-mdc-cell:last-child, .app-table-card th.mat-mdc-header-cell:last-child, .app-table-card td.mat-mdc-footer-cell:last-child { padding-inline-end: 20px; }
+.app-table-card td.mat-mdc-cell { background: transparent; }
+.app-table-card tr.mat-mdc-row:hover td.mat-mdc-cell { background: var(--app-row-hover); }
+.app-table-footer { border-top: 1px solid var(--app-border); }
+.app-num-cell { text-align: end !important; font-feature-settings: var(--app-num); font-variant-numeric: tabular-nums lining-nums; }
+th.app-num-cell .mat-sort-header-container { justify-content: flex-end; }
+.app-total-row td { font-weight: 600; border-top: 1px solid var(--mat-sys-outline); background: var(--app-thead-bg) !important; }
+
+// Empty states
+.app-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 32px; text-align: center; color: var(--mat-sys-on-surface-variant); }
+.app-empty .title { font: var(--app-type-title); color: var(--mat-sys-on-surface); margin: 0; }
+.app-empty p { margin: 0; }
+
+// Menus, dialogs, snackbars on L3 with the level-3 shadow
+.mat-mdc-menu-panel, .mat-mdc-dialog-surface, .mat-mdc-select-panel, .mat-datepicker-content, .mat-mdc-snack-bar-container .mdc-snackbar__surface { box-shadow: var(--app-shadow-3); }
+.mat-mdc-dialog-title { font: var(--app-type-section); }
+
+// Under 600px, tables marked .app-cards become one card per row (td[data-label] gives the label).
+@media (max-width: 599.98px) {
+  .app-table-card:has(table.app-cards) { background: transparent; border: 0; box-shadow: none; border-radius: 0; overflow: visible; }
+  table.app-cards, .app-cards tbody { display: block; width: 100%; }
+  .app-cards thead, .app-cards tr.mat-mdc-header-row { display: none; }
+  .app-cards tr.mat-mdc-row {
+    display: block; height: auto; margin: 0 0 10px; padding: 12px 16px;
+    background: var(--app-surface-raised); border: 1px solid var(--app-border); border-radius: var(--app-radius-l); box-shadow: var(--app-shadow-1);
+  }
+  .app-cards td.mat-mdc-cell, .app-table-card .app-cards td.mat-mdc-cell:first-child, .app-table-card .app-cards td.mat-mdc-cell:last-child {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    min-height: 36px; padding: 4px 0; border: 0; text-align: end;
+  }
+  .app-cards td.mat-mdc-cell::before {
+    content: attr(data-label); font: var(--mat-sys-label-medium); color: var(--mat-sys-on-surface-variant); text-align: start;
+  }
+  .app-cards td.mat-mdc-cell.app-cell-actions { justify-content: flex-end; flex-wrap: wrap; }
+  .app-cards td.mat-mdc-cell.app-cell-actions::before { content: none; }
+}
+.app-table-card td.mat-mdc-cell.mat-mdc-table-sticky { background: var(--app-surface-raised); }
+.app-table-card tr.mat-mdc-row:hover td.mat-mdc-cell.mat-mdc-table-sticky { background: var(--app-row-hover); }
